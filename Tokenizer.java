@@ -10,7 +10,14 @@ class Tokenizer{
 		return _output;
 	}
 	
-	private String trimInput(){
+	public static void run(){
+		String temp = trimInput();
+		if(checkCharSet(temp) == false){
+			return;
+		}
+	}
+	
+	private static String trimInput(){
 		String tempString = "";
 		for(int i = 0; i < _input.length(); i++){
 			if(_input.charAt(i) != ' '){
@@ -20,14 +27,23 @@ class Tokenizer{
 		return tempString;
 	}
 	
-	private boolean checkCharSet(String input){
-		char[] charSet = {'a', 'b', 'c', '+', '-', '/', '*', '=', '(', ')'};
+	private static boolean checkCharSet(String input){
 		for(int i = 0; i < input.length(); i++){
-			if(!(charSet.contains(input.charAt(i)))){
-				System.out.println("Error: " + Character.toString(input.charAt(i)) + " is not a valid character.");
+			if(charGood(input.charAt(i)) == false){
+				System.out.println("Incorrect input");
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	private static boolean charGood(char c){
+		char[] charSet = {'a', 'b', 'c', '+', '-', '/', '*', '=', '(', ')', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+		for(int i = 0; i < 20; i++){
+			if(c == charSet[i]){
+				return true;
+			}
+		}
+		return false;
 	}
 }

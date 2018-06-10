@@ -15,6 +15,9 @@ class Tokenizer{
 		if(checkCharSet(temp) == false){
 			return;
 		}
+		if(checkBrackets(temp) == false){
+			return;
+		}
 	}
 	
 	private static String trimInput(){
@@ -30,7 +33,7 @@ class Tokenizer{
 	private static boolean checkCharSet(String input){
 		for(int i = 0; i < input.length(); i++){
 			if(charGood(input.charAt(i)) == false){
-				System.out.println("Incorrect input");
+				System.out.println("Error: " + input.charAt(i) + " is not a valid character");
 				return false;
 			}
 		}
@@ -46,4 +49,22 @@ class Tokenizer{
 		}
 		return false;
 	}
+	
+	private static boolean checkBrackets(String input){
+		int count = 0;
+		for(int i = 0; i < input.length(); i++){
+			if(input.charAt(i) == '('){
+				count++;
+			}else if(input.charAt(i) == ')'){
+				count--;
+			}
+		}
+		if(count != 0){
+			System.out.println("Error: Brackets are used incorrectly");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 }

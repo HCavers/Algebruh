@@ -51,20 +51,30 @@ class Tokenizer{
 	}
 	
 	private static boolean checkBrackets(String input){
-		int count = 0;
+		char prevChar = ')';
 		for(int i = 0; i < input.length(); i++){
-			if(input.charAt(i) == '('){
-				count++;
-			}else if(input.charAt(i) == ')'){
-				count--;
+			if(input.charAt(i) == ')' || input.charAt(i) == '('){
+				if(bracketsOpposite(input.charAt(i), prevChar)){
+					prevChar = input.charAt(i);
+				}else{
+					return false;
+				}
 			}
 		}
-		if(count != 0){
-			System.out.println("Error: Brackets are used incorrectly");
+		if(prevChar == '('){
+			System.out.println("Error: Unclosed set of brackets");
 			return false;
 		}else{
 			return true;
 		}
 	}
 	
+	private static boolean bracketsOpposite(char current, char previous){
+		if(current == previous){
+			System.out.println("Error: Unclosed set of brackets");
+			return false;
+		}else{
+			return true;
+		}		
+	}
 }

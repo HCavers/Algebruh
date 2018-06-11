@@ -10,7 +10,7 @@ class Tokenizer{
 		return _output;
 	}
 	
-	public static void run(){
+	public static void tokenize(){
 		String temp = trimInput();
 		if(checkCharSet(temp) == false){
 			return;
@@ -18,6 +18,15 @@ class Tokenizer{
 		if(checkBrackets(temp) == false){
 			return;
 		}
+		setOutput(temp);
+	}
+	
+	private static void setOutput(String input){
+		char[] result = new char[input.length()];
+		for(int i = 0; i < input.length(); i++){
+			result[i] = input.charAt(i);
+		}
+		_output = result;
 	}
 	
 	private static String trimInput(){
@@ -42,7 +51,7 @@ class Tokenizer{
 	
 	private static boolean charGood(char c){
 		char[] charSet = {'a', 'b', 'c', '+', '-', '/', '*', '=', '(', ')', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
-		for(int i = 0; i < 20; i++){
+		for(int i = 0; i < charSet.length; i++){
 			if(c == charSet[i]){
 				return true;
 			}

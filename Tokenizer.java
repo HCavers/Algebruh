@@ -18,7 +18,7 @@ class Tokenizer{
 		if(checkBrackets(temp) == false){
 			return;
 		}
-		if(emptyBrackets(temp) == false){
+		if(checkFormatt(temp) == false){
 			return;
 		}
 		setOutput(temp);
@@ -77,7 +77,11 @@ class Tokenizer{
 			System.out.println("Error: Unclosed set of brackets");
 			return false;
 		}else{
-			return true;
+			if(emptyBrackets(input)){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	}
 	
@@ -125,6 +129,140 @@ class Tokenizer{
 		}
 		return -1;
 	}
+	
+	private static boolean checkFormatt(String input){
+		if(checkEqualsNum(input) == false){
+			return false;
+		}
+		int equalIndex = getEqualsNum(input);
+		if(checkRight(input, equalIndex) == false){
+			return false;
+		}
+		String temp = trimBrackets(input);
+		equalIndex = getEqualsNum(temp);
+		if(checkLeft(temp, equalIndex) == false){
+			return false;
+		}
+		return true;
+	}
+	
+	private static String trimBrackets(String input){
+		String result = "";
+		for(int i = 0; i < input.length(); i++){
+			if(input.charAt(i) != '(' ){
+				if(input.charAt(i) != ')'){
+					result += Character.toString(input.charAt(i));
+				}
+			}
+		}
+		return result;
+	}
+	
+	private static boolean checkRight(String input, int equalsIndex){
+		char[] charSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+		int index = equalsIndex + 1;
+		for(int i = index; i < input.length(); i++){
+			boolean check = false;
+			for(int j = 0; j < charSet.length; j++){
+				if(input.charAt(i) == charSet[j]){
+					check = true;
+				}
+			}
+			if(check == false){
+				System.out.println("Error: Incorrect format only numbers are allowed after the '=' sign");
+				return false;
+			}else{
+				check = false;
+			}
+		}
+		return true;
+	}
+	
+	private static boolean checkLeft(String input, int equalsIndex){
+		char[] letterCharSet = {'a', 'b', 'c'};
+		char[] symbolCharSet = {'(', ')', '+', '*', '-', '/'};
+		char type = getFirstType(input);
+		int letterNum = 0;
+		int symbolNum = 0;
+		for(int i = 0; i < equalsIndex; i++){
+			boolean check = false;
+			int size = 0;
+			if(type == 'l'){
+				size = letterCharSet.length;
+			}else{
+				size = symbolCharSet.length;
+			}
+			for(int j = 0; j < size; j++){
+				if(type == 'l'){
+					if(input.charAt(i) == letterCharSet[j]){
+						check = true;
+						letterNum++;
+					}
+				}else{
+					if(input.charAt(i) == symbolCharSet[j]){
+						check = true;
+						symbolNum++;
+					}
+				}
+			}
+			if(check == false){
+				System.out.println("Error: Incorrect format");
+				return false;
+			}else{
+				check = false;
+				if(type == 'l'){
+					type = 's';
+				}else{
+					type = 'l';
+				}
+			}
+		}
+		int difference = letterNum - symbolNum;
+		if(difference < 0){
+			difference = difference * -1;
+		}
+		if(difference == 1){
+			return true;
+		}else{
+			System.out.println("Error: Incorrect format");
+			return false;
+		}
+	}
+	
+	private static char getFirstType(String input){
+		char first = input.charAt(0);
+		if(first == 'a' || first == 'b' || first == 'c'){
+			return 'l';
+		}else{
+			return 's';
+		}
+	}	
+	
+	private static boolean checkEqualsNum(String input){
+		int count = 0;
+		for(int i = 0; i < input.length(); i++){
+			if(input.charAt(i) == '='){
+				count++;
+			}
+		}
+		if(count == 1){
+			return true;
+		}else{
+			System.out.println("Error: Incorrect too many '=', please only use one");
+			return false;
+		}
+	}
+	
+	private static int getEqualsNum(String input){
+		for(int i = 0; i < input.length(); i++){
+			if(input.charAt(i) == '='){
+				return i;
+			}
+		}
+		System.out.println("Error: No '=' found, one '=' is required");
+		return -1;
+	}
+	
 	
 	
 	

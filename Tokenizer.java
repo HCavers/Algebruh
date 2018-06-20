@@ -18,6 +18,9 @@ class Tokenizer{
 		if(checkBrackets(temp) == false){
 			return;
 		}
+		if(emptyBrackets(temp) == false){
+			return;
+		}
 		setOutput(temp);
 	}
 	
@@ -86,4 +89,43 @@ class Tokenizer{
 			return true;
 		}		
 	}
+	
+	private static boolean emptyBrackets(String input){
+		int numBracketPairs = getBracketPairNum(input);
+		for(int i = 1; i <= numBracketPairs; i++){
+			int startBracketIndex = getBracketIndex(i, 'f', input);
+			int lastBracketIndex = getBracketIndex(i, 'l', input);
+			if((lastBracketIndex - startBracketIndex) != 4){
+				System.out.println("Error: Incorrectly filled brackets");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private static int getBracketPairNum(String input){
+		int count = 0;
+		for(int i = 0; i < input.length(); i++){
+			if(input.charAt(i) == '('){
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	private static int getBracketIndex(int pairNum, char type, String input){
+		int count = 0;
+		for(int i = 0; i < input.length(); i++){
+			if(type == 'f' && input.charAt(i) == '(' || type == 'l' && input.charAt(i) == ')'){
+				count++;
+				if(count == pairNum){
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+	
+	
+	
 }

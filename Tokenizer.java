@@ -10,18 +10,19 @@ class Tokenizer{
 		return _output;
 	}
 	
-	public static void tokenize(){
+	public static boolean tokenize(){
 		String temp = trimInput();
 		if(checkCharSet(temp) == false){
-			return;
+			return false;
 		}
 		if(checkBrackets(temp) == false){
-			return;
+			return false;
 		}
 		if(checkFormatt(temp) == false){
-			return;
+			return false;
 		}
 		setOutput(temp);
+		return true;
 	}
 	
 	private static void setOutput(String input){
@@ -184,6 +185,9 @@ class Tokenizer{
 		char type = getFirstType(input);
 		int letterNum = 0;
 		int symbolNum = 0;
+		int aCount = 0;
+		int bCount = 0;
+		int cCount = 0;
 		for(int i = 0; i < equalsIndex; i++){
 			boolean check = false;
 			int size = 0;
@@ -194,9 +198,21 @@ class Tokenizer{
 			}
 			for(int j = 0; j < size; j++){
 				if(type == 'l'){
-					if(input.charAt(i) == letterCharSet[j]){
+					if(input.charAt(i) == 'a'){
 						check = true;
+						aCount++;
 						letterNum++;
+						j = size;
+					}else if(input.charAt(i) == 'b'){
+						check = true;
+						bCount++;
+						letterNum++;
+						j = size;
+					}else if(input.charAt(i) == 'c'){
+						check = true;
+						cCount++;
+						letterNum++;
+						j = size;
 					}
 				}else{
 					if(input.charAt(i) == symbolCharSet[j]){
@@ -221,7 +237,7 @@ class Tokenizer{
 		if(difference < 0){
 			difference = difference * -1;
 		}
-		if(difference == 1){
+		if(difference == 1 && aCount == 1 && bCount == 1 && cCount == 1){
 			return true;
 		}else{
 			System.out.println("Error: Incorrect format");
@@ -261,9 +277,5 @@ class Tokenizer{
 		}
 		System.out.println("Error: No '=' found, one '=' is required");
 		return -1;
-	}
-	
-	
-	
-	
+	}	
 }
